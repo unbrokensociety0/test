@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Например: "https://some-name.loca.lt"
     // Если вы тестируете на GitHub Pages, этот URL должен быть там.
     // Если фронтенд и бэкенд на одном домене, оставьте пустым "".
-    const API_BASE_URL = "https://orange-poems-end.loca.lt"; // <-- ЗАМЕНИТЕ ЭТО ПРИ НЕОБХОДИМОСТИ
+    const API_BASE_URL = "https://hseivanapptest.loca.lt"; // <-- ЗАМЕНИТЕ ЭТО ПРИ НЕОБХОДИМОСТИ
 
     // --- 0. Элементы модального окна ---
     const modal = document.getElementById('qr-modal');
@@ -98,13 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 4. Вспомогательная функция для Fetch API ---
+// Замените существующую функцию apiFetch на эту:
 async function apiFetch(endpoint, options = {}) {
     if (!tgInitData) {
         console.error("tgInitData is not available. Cannot make API call.");
         if (tg) tg.showAlert("Ошибка: не удалось получить данные Telegram. Перезапустите приложение.");
         throw new Error("tgInitData is missing.");
     }
-    // Логируем сам initData перед отправкой
     console.log(`[apiFetch] Вызов ${endpoint}. Отправка initData (первые 50 символов): ${tgInitData.substring(0, 50)}...`);
 
     const defaultOptions = {
@@ -114,33 +114,37 @@ async function apiFetch(endpoint, options = {}) {
         }
     };
 
+    let response; // Выносим response, чтобы он был доступен в catch
     try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...defaultOptions, ...options });
+        response = await fetch(`${API_BASE_URL}${endpoint}`, { ...defaultOptions, ...options });
 
-        console.log(`[apiFetch] Ответ от ${endpoint}: Статус ${response.status}`); // Логируем статус
+        console.log(`[apiFetch] Ответ от ${endpoint}: Статус ${response.status}`);
 
         if (!response.ok) {
-            let errorData = { error: `HTTP error! status: ${response.status}` };
+            // ----- НАЧАЛО ИСПРАВЛЕНИЯ -----
+            // Сначала читаем тело ОДИН раз как текст
+            const errorText = await response.text();
+            let errorJson = { error: `HTTP error! status: ${response.status}. ${errorText.substring(0, 100)}` }; // Запасной вариант
             try {
-                 errorData = await response.json();
-                 console.error(`[apiFetch] Ошибка API ${response.status} от ${endpoint}:`, errorData);
+                 // Пытаемся распарсить текст как JSON
+                 errorJson = JSON.parse(errorText);
             } catch (e) {
-                 const textError = await response.text(); // Попробуем получить текст ошибки
-                 console.error(`[apiFetch] Ошибка API ${response.status} от ${endpoint} (не JSON):`, textError);
-                 errorData.error = textError.substring(0, 100); // Показываем часть текста
+                 console.warn(`Could not parse error response from ${endpoint} as JSON:`, errorText);
             }
-            if (tg) tg.showAlert(`Ошибка ${response.status}: ${errorData.error}`);
-            throw new Error(errorData.error);
+            console.error(`[apiFetch] Ошибка API ${response.status} от ${endpoint}:`, errorJson);
+            if (tg) tg.showAlert(`Ошибка ${response.status}: ${errorJson.error || errorText.substring(0,100)}`);
+            throw new Error(errorJson.error || `HTTP error ${response.status}`);
+            // ----- КОНЕЦ ИСПРАВЛЕНИЯ -----
         }
-        return response.json();
+        return response.json(); // Читаем тело как JSON ТОЛЬКО если статус OK
     } catch (networkError) {
-         // Логируем сетевую ошибку подробнее
          console.error(`[apiFetch] СЕТЕВАЯ ОШИБКА при запросе к ${endpoint}:`, networkError.message, networkError);
-         if (tg) tg.showAlert(`Ошибка сети: ${networkError.message}. Проверьте подключение или URL API.`);
+         // Добавляем проверку, есть ли response (ошибка могла случиться до получения ответа)
+         const statusText = response ? `Статус ${response.status}` : networkError.message;
+         if (tg) tg.showAlert(`Ошибка сети (${statusText}). Проверьте подключение или URL API.`);
          throw networkError;
     }
 }
-
     // --- 5. "Оживленные" функции загрузки данных ---
 
     async function loadEvents() {
