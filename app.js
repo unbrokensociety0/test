@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Например: "https://some-name.loca.lt"
     // Если вы тестируете на GitHub Pages, этот URL должен быть там.
     // Если фронтенд и бэкенд на одном домене, оставьте пустым "".
-    const API_BASE_URL = "ttps://young-wasps-grin.loca.lt"; // <-- ЗАМЕНИТЕ ЭТО ПРИ НЕОБХОДИМОСТИ
+    const API_BASE_URL = "https://young-wasps-grin.loca.lt"; // <-- ЗАМЕНИТЕ ЭТО ПРИ НЕОБХОДИМОСТИ
 
     // --- 0. Элементы модального окна ---
     const modal = document.getElementById('qr-modal');
