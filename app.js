@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Например: "https://some-name.loca.lt"
     // Если вы тестируете на GitHub Pages, этот URL должен быть там.
     // Если фронтенд и бэкенд на одном домене, оставьте пустым "".
-    const API_BASE_URL = "https://young-wasps-grin.loca.lt"; // <-- ЗАМЕНИТЕ ЭТО ПРИ НЕОБХОДИМОСТИ
+    const API_BASE_URL = "https://orange-poems-end.loca.lt"; // <-- ЗАМЕНИТЕ ЭТО ПРИ НЕОБХОДИМОСТИ
 
     // --- 0. Элементы модального окна ---
     const modal = document.getElementById('qr-modal');
@@ -98,41 +98,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 4. Вспомогательная функция для Fetch API ---
-    async function apiFetch(endpoint, options = {}) {
-        if (!tgInitData) {
-            console.error("tgInitData is not available. Cannot make API call.");
-            if (tg) tg.showAlert("Ошибка: не удалось получить данные Telegram. Перезапустите приложение.");
-            throw new Error("tgInitData is missing.");
-        }
-
-        const defaultOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${tgInitData}` // Главный элемент безопасности
-            }
-        };
-
-        try {
-            const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...defaultOptions, ...options });
-
-            if (!response.ok) {
-                let errorData = { error: `HTTP error! status: ${response.status}` };
-                try {
-                     errorData = await response.json(); // Попробуем распарсить JSON ошибки
-                } catch (e) {
-                     console.warn("Could not parse error response as JSON");
-                }
-                console.error(`API Error ${response.status}:`, errorData.error);
-                if (tg) tg.showAlert(`Ошибка: ${errorData.error}`);
-                throw new Error(errorData.error);
-            }
-            return response.json();
-        } catch (networkError) {
-             console.error("Network or fetch error:", networkError);
-             if (tg) tg.showAlert(`Ошибка сети: ${networkError.message}. Проверьте подключение.`);
-             throw networkError; // Пробрасываем ошибку дальше
-        }
+async function apiFetch(endpoint, options = {}) {
+    if (!tgInitData) {
+        console.error("tgInitData is not available. Cannot make API call.");
+        if (tg) tg.showAlert("Ошибка: не удалось получить данные Telegram. Перезапустите приложение.");
+        throw new Error("tgInitData is missing.");
     }
+    // Логируем сам initData перед отправкой
+    console.log(`[apiFetch] Вызов ${endpoint}. Отправка initData (первые 50 символов): ${tgInitData.substring(0, 50)}...`);
+
+    const defaultOptions = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tgInitData}`
+        }
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...defaultOptions, ...options });
+
+        console.log(`[apiFetch] Ответ от ${endpoint}: Статус ${response.status}`); // Логируем статус
+
+        if (!response.ok) {
+            let errorData = { error: `HTTP error! status: ${response.status}` };
+            try {
+                 errorData = await response.json();
+                 console.error(`[apiFetch] Ошибка API ${response.status} от ${endpoint}:`, errorData);
+            } catch (e) {
+                 const textError = await response.text(); // Попробуем получить текст ошибки
+                 console.error(`[apiFetch] Ошибка API ${response.status} от ${endpoint} (не JSON):`, textError);
+                 errorData.error = textError.substring(0, 100); // Показываем часть текста
+            }
+            if (tg) tg.showAlert(`Ошибка ${response.status}: ${errorData.error}`);
+            throw new Error(errorData.error);
+        }
+        return response.json();
+    } catch (networkError) {
+         // Логируем сетевую ошибку подробнее
+         console.error(`[apiFetch] СЕТЕВАЯ ОШИБКА при запросе к ${endpoint}:`, networkError.message, networkError);
+         if (tg) tg.showAlert(`Ошибка сети: ${networkError.message}. Проверьте подключение или URL API.`);
+         throw networkError;
+    }
+}
 
     // --- 5. "Оживленные" функции загрузки данных ---
 
