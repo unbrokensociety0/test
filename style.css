@@ -1,0 +1,157 @@
+/* Используем шрифт Inter, как в большинстве современных интерфейсов */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+body {
+    font-family: 'Inter', sans-serif;
+    /* Убираем "оттягивание" страницы на iOS */
+    overscroll-behavior: none;
+    /* Плавный скролл */
+    scroll-behavior: smooth;
+}
+
+/* Классы для цветовой схемы из скриншотов */
+:root {
+    /* Цвета со скриншотов */
+    --page-bg-events: #f3f4f6; /* Светло-серый */
+    --page-bg-profile: #E0E7FF; /* Светло-голубой */
+    --card-bg: #ffffff;
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --text-time: #374151;
+    --brand-blue: #4F46E5;
+    --brand-green: #10B981;
+    --brand-yellow: #F59E0B;
+    --brand-light-blue: #DBEAFE;
+}
+
+/* Стилизация основного контента */
+#app-content {
+    /* Отступ снизу, равный высоте навбара */
+    padding-bottom: 90px;
+}
+
+/* Стилизация фиксированного навбара */
+#app-navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 85px;
+    background-color: white;
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding-top: 12px;
+    /* Тень, как на скриншоте "Мои NFT" */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.nav-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Стиль для активной кнопки */
+.nav-button.active {
+    color: var(--text-primary);
+}
+
+/* Стили для иконок в навбаре */
+.nav-icon {
+    width: 28px;
+    height: 28px;
+    stroke-width: 2;
+}
+
+/* Классы для кнопок регистрации (как на скриншоте 1) */
+.btn-register {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+.btn-go {
+    background-color: var(--brand-light-blue);
+    color: var(--brand-blue);
+}
+.btn-go:hover {
+    background-color: #C7D2FE;
+}
+.btn-registered {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+.btn-waiting {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+/* Стилизация страницы Профиля (как на скриншоте 3) */
+#page-profile {
+    background-color: var(--page-bg-profile);
+    min-height: 100vh;
+}
+.profile-header {
+    background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%);
+    border-radius: 20px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.profile-button {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: var(--text-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+
+/* Стилизация страницы NFT (как на скриншоте 2) */
+.nft-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+.nft-card {
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Стилизация страницы Ивентов (как на скриншоте 1) */
+#page-events {
+    background-color: var(--page-bg-events);
+    min-height: 100vh;
+}
+.event-card {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+.event-card-image {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0;
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSE Mini App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white text-gray-900">
+
+    <main id="app-content">
+
+        <div id="page-events" class="p-4 space-y-6">
+            <h1 class="text-3xl font-bold text-black">Ближайшие события</h1>
+            
+            <div id="events-container" class="space-y-6">
+                </div>
+            
+            <footer class="text-center text-gray-400 text-xs font-medium pt-4">
+                NFT club © GSB HSE 1993–2025
+            </footer>
+        </div>
+
+        <div id="page-nfts" class="p-4 space-y-6 hidden">
+            <h1 class="text-3xl font-bold text-black">Мои NFT</h1>
+            
+            <div class="flex gap-2">
+                <button class="flex-1 bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    Сортировка
+                </button>
+                <button class="flex-1 bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Коллекция
+                </button>
+            </div>
+            
+            <div id="nfts-container" class="nft-grid">
+                </div>
+            
+            <footer class="text-center text-gray-400 text-xs font-medium pt-4">
+                NFT club © GSB HSE 1993–2025
+            </footer>
+        </div>
+
+        <div id="page-profile" class="p-4 space-y-4 hidden">
+            <h1 class="text-3xl font-bold text-black mb-2">Профиль</h1>
+
+            <div id="profile-info-block" class="profile-header">
+                <div class="w-16 h-16 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                    <img id="profile-avatar" src="https://placehold.co/64x64/E0E7FF/374151?text=User" alt="Avatar" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h2 id="profile-name" class="font-bold text-xl text-black">Загрузка...</h2>
+                    <p id="profile-username" class="font-medium text-gray-600">...</p>
+                    <p id="profile-phone" class="font-medium text-gray-600"></p>
+                </div>
+                <div class="ml-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+            </div>
+            
+            <div class="space-y-3 pt-2">
+                <button id="my-events-button" class="profile-button w-full">
+                    <span class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="m9 16 2 2 4-4"></path></svg>
+                        Мои мероприятия
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                
+                <button id="my-qr-button" class="profile-button w-full">
+                    <span class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
+                        Мой QR-код
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                
+                <button class="profile-button w-full opacity-60 cursor-not-allowed">
+                    <span class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Настройки
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                
+                <button class="profile-button w-full opacity-60 cursor-not-allowed">
+                    <span class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.67V20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8.67a8 8 0 1 1 12 0Z"></path><path d="M12 12v0"></path><path d="M12 16v0"></path></svg>
+                        Служба поддержки
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                
+                 <button class="profile-button w-full opacity-60 cursor-not-allowed">
+                    <span class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline><line x1="12" y1="22" x2="12" y2="13"></line><line x1="19" y1="15" x2="19" y2="22"></line><line x1="5" y1="15" x2="5" y2="22"></line><polyline points="19 15 12 13 5 15"></polyline></svg>
+                        Обратная связь
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                
+                 <button class="profile-button w-full opacity-60 cursor-not-allowed">
+                    <span class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        О проекте
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
+            
+             <footer class="text-center text-gray-500 text-xs font-medium pt-8">
+                NFT club © GSB HSE 1993–2025
+            </footer>
+        </div>
+    </main>
+
+    <nav id="app-navbar">
+        <button id="nav-events" class="nav-button active">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 2V5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16 2V5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3.5 9.09H20.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.9955 13.7H12.0045" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.29431 13.7H8.3033" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.29431 16.7H8.3033" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>События</span>
+        </button>
+
+        <button id="nav-nfts" class="nav-button">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2 17L12 22L22 17" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2 12L12 17L22 12" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>Мои NFT</span>
+        </button>
+
+        <button id="nav-profile" class="nav-button">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>Профиль</span>
+        </button>
+    </nav>
+
+    <script src="app.js" defer></script>
+
+</body>
+</html>
